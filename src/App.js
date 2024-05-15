@@ -9,6 +9,7 @@ const App = () => {
     const [cityName, setCityName] = useState("Seattle");
     const [weatherData, setWeatherData] = useState({});
     const [error, setError] = useState(false);
+
     const inputHandler = (e) => {
         setInputCity(e.target.value);
     };
@@ -19,24 +20,28 @@ const App = () => {
         setCityName(inputCity);
     };
 
-    const URL = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid={{api_key_weather_app}}`;
+    const API_KEY = `9216bb0bd27d02b044b6f1cd42af207e`;
 
-    async function fetchData(URL) {
-        const response = await fetch(URL);
-        const data = await response.json();
-        if (data.cod === "404") {
+    async function fetchData(city) {
+        const URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`;
+        try {
+            const response = await fetch(URL);
+            const data = await response.json();
+            if (data.cod === "404") {
+                setError(true);
+            } else {
+                setWeatherData(data);
+            }
+        } catch (error) {
             setError(true);
-        } else {
-            setWeatherData(data);
         }
     }
 
-
     useEffect(() => {
-        fetchData(URL);
-    }, [URL]);
-    return (
+        fetchData(cityName);
+    }, [cityName]);
 
+    return (
         <div>
             <Header />
             <InputCity
@@ -45,12 +50,11 @@ const App = () => {
                 onSubmitHandler={submitHandler}
             />
             {error ? (
-                <h3 className="error">No data found :( </h3>
+                <h3 className="error">No data found :(</h3>
             ) : (
-                <ShowWeather data={weatherData}/>
-            )};
+                <ShowWeather data={weatherData} />
+            )}
         </div>
     );
 }
-
 export default App;
