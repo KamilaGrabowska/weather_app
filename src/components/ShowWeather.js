@@ -18,14 +18,14 @@ const ShowWeather = ({data}) =>{
 
     const dynamicBackgroundColor = (temp) => {
         if (temp < 10) {
-            setDynamicBackground("#bbeafa");
+            setDynamicBackground("#0081A7");
         }
         if (temp > 10 && temp <= 30) {
-            setDynamicBackground("#fcfa5b");
+            setDynamicBackground("#FED9B7");
         }
 
         if (temp > 30) {
-            setDynamicBackground(" #ff512f");
+            setDynamicBackground(" #F07167");
         }
     };
 
